@@ -30,6 +30,36 @@ Cycle continues until the backlog is empty or a blocker is found
 
 The runner does not implement code by itself. The session agent uses the runner and `tools/runtime_iteration.py` as auditable rails to work on one task at a time.
 
+## Real-world example: GPT 5.5 operating the harness
+
+In [this shared conversation](https://chatgpt.com/share/6a615476-36e0-83e9-9203-76d8e137c344), GPT 5.5 received `sdd_minimal_harness.zip` in the ChatGPT web runtime and used the harness to build a portable SerpApi product-search tool for Windows across three interactive rounds, finishing every round with the backlog fully `verified` and the regression suite green.
+
+**Round 1 — briefing.** The user uploads the harness and states the specification in chat:
+
+<img src="docs/screenshots/chat-1-briefing.png" width="720" alt="User briefing: build a portable SerpApi product search tool using the harness">
+
+**Round 1 — delivery (v1.00).** The agent replaces the demo spec and works through seven backlog tasks — including a deliberate failure-and-repair cycle where a mocked transport error leaked the API key and the next iteration added redaction — delivering with all harness gates green (7/7 verified, 21 tests, runtime loop `satisfied`):
+
+<img src="docs/screenshots/chat-2-delivery.png" width="720" alt="Delivery of v1.00 with 7/7 backlog tasks verified and 21 tests passed">
+
+**Round 2 — real-machine bug fix (v1.01).** The user pastes a bootstrap failure from their own Windows machine (`No module named pip` in the embeddable Python); the agent identifies the control-flow defect, repairs the bootstrap, and closes the feedback as two new verified tasks (9/9 verified, 25 tests):
+
+<img src="docs/screenshots/chat-3-bugfix.png" width="720" alt="User pastes a Windows bootstrap failure; agent delivers v1.01 with 9/9 tasks verified">
+
+**Round 3 — UX iteration (v1.02).** A final request — clear interactive prompts — becomes task ten, verified like everything else (10/10 verified, 29 tests):
+
+<img src="docs/screenshots/chat-4-iteration.png" width="720" alt="Agent delivers v1.02 with interactive prompts, 10/10 tasks verified and 29 tests passed">
+
+### The delivered program running on Windows
+
+First run on the user's machine: the launcher downloads the pinned CPython embeddable package, silently bootstraps pip and the isolated environment, and asks for the search parameters:
+
+<img src="docs/screenshots/program-setup.png" width="720" alt="First run: runtime bootstrap and interactive search prompts in PowerShell">
+
+A completed search: 40 products exported to a price-sorted CSV in `./output`, with lowest, highest, and average prices printed on screen:
+
+<img src="docs/screenshots/results.png" width="720" alt="Completed search showing price statistics and the generated CSV open in VS Code">
+
 ## Quick start
 
 Requirements: Python 3.10+.
@@ -74,7 +104,10 @@ tests/
 ├── test_hello_transform.py
 ├── test_sdd_runner.py
 ├── test_runtime_iteration.py
-└── test_task_documentation_sync.py
+├── test_task_documentation_sync.py
+└── test_replacement_documentation.py
+docs/
+└── screenshots/
 tools/
 ├── sdd_runner.py
 ├── runtime_iteration.py
