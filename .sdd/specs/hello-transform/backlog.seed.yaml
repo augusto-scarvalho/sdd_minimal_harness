@@ -1,6 +1,6 @@
 backlog:
 - id: TSK01
-  title: Implementar normalização de texto válido
+  title: Implement valid-text normalization
   status: ready
   type: code_and_test
   related_requirements:
@@ -11,20 +11,20 @@ backlog:
   consumes:
   - requirements.md
   - design.md
-  produces: &id001
+  produces:
   - src/hello_transform.py
-  - tests/test_hello_transform.py::test_normaliza_texto_valido
-  - tests/test_hello_transform.py::test_remove_espacos_extras
+  - tests/test_hello_transform.py::test_normalizes_valid_text
+  - tests/test_hello_transform.py::test_strips_surrounding_spaces
   evidence_expected:
-  - pytest passa
-  - test_normaliza_texto_valido existe
-  - test_remove_espacos_extras existe
+  - pytest passes
+  - test_normalizes_valid_text exists
+  - test_strips_surrounding_spaces exists
   priority:
     score: 20
     reasons:
-    - Critérios CA01/CA02 precisam de prova executável
+    - Criteria CA01/CA02 need executable proof
 - id: TSK02
-  title: Implementar rejeição de entrada inválida
+  title: Implement invalid-input rejection
   status: ready
   type: code_and_test
   related_requirements:
@@ -35,15 +35,15 @@ backlog:
   consumes:
   - requirements.md
   - design.md
-  produces: &id002
+  produces:
   - src/hello_transform.py
-  - tests/test_hello_transform.py::test_rejeita_nulo
-  - tests/test_hello_transform.py::test_rejeita_vazio
+  - tests/test_hello_transform.py::test_rejects_none
+  - tests/test_hello_transform.py::test_rejects_empty
   evidence_expected:
-  - pytest passa
-  - test_rejeita_nulo existe
-  - test_rejeita_vazio existe
+  - pytest passes
+  - test_rejects_none exists
+  - test_rejects_empty exists
   priority:
     score: 19
     reasons:
-    - Critérios CA03/CA04 precisam de prova executável
+    - Criteria CA03/CA04 need executable proof

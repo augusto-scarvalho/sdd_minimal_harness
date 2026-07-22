@@ -1,20 +1,20 @@
-# Política do backlog
+# Backlog policy
 
-Priorize por evidência, não por opinião.
+Prioritize by evidence, not by opinion.
 
-## Aumentam a prioridade
+## Raise priority
 
-- teste falhando;
-- critério sem cobertura;
-- bloqueio;
-- lacuna entre especificação e código;
-- risco operacional;
-- dependência desbloqueadora.
+- failing test;
+- criterion without coverage;
+- blocker;
+- gap between spec and code;
+- operational risk;
+- unblocking dependency.
 
-## Reduzem a prioridade
+## Lower priority
 
-- tarefa genérica;
-- tarefa sem consumidor;
-- tarefa sem evidência;
-- documentação decorativa;
-- item sem delta.
+- generic task;
+- task without a consumer;
+- task without evidence;
+- decorative documentation;
+- item without a delta.

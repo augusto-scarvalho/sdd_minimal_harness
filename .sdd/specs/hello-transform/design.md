@@ -1,23 +1,23 @@
 # Design — hello-transform
 
-## Visão geral
+## Overview
 
-A feature será implementada como uma função pura em `src/hello_transform.py`.
+The feature is implemented as a pure function in `src/hello_transform.py`.
 
-## Componentes
+## Components
 
-- `src/hello_transform.py`: função `normalize_text`.
-- `tests/test_hello_transform.py`: testes de comportamento.
+- `src/hello_transform.py`: `normalize_text` function.
+- `tests/test_hello_transform.py`: behavior tests.
 
-## Decisões técnicas
+## Technical decisions
 
-- Usar função pura para manter comportamento determinístico.
-- Lançar `ValueError` para entradas inválidas.
-- Usar `strip()` para normalização.
+- Use a pure function to keep the behavior deterministic.
+- Raise `ValueError` for invalid inputs.
+- Use `strip()` for normalization.
 
-## Estratégia de testes
+## Test strategy
 
-- Testar texto válido.
-- Testar remoção de espaços.
-- Testar entrada nula.
-- Testar entrada vazia.
+- Test valid text.
+- Test space stripping.
+- Test null input.
+- Test empty input.

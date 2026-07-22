@@ -1,53 +1,53 @@
-# Instruções para o agente de runtime
+# Instructions for the runtime agent
 
-Este repositório deve ser trabalhado diretamente pelo agente que possui ferramentas de leitura, edição e execução.
+This repository is meant to be worked on directly by the agent that has read, edit, and execution tools.
 
-## Objetivo do ciclo
+## Goal of the cycle
 
-Repetir `inspecionar → alterar → verificar → criticar` até que os critérios da especificação sejam satisfeitos ou exista um bloqueio real.
+Repeat `inspect → edit → verify → critique` until the specification criteria are satisfied or a real blocker exists.
 
-## Procedimento obrigatório
+## Mandatory procedure
 
-1. Leia `.sdd/runtime-loop.yaml`, a especificação selecionada e o item de maior prioridade com status `ready`.
-2. Execute `python tools/runtime_iteration.py --spec <especificação> --prepare`.
-3. Inspecione o relatório em `.sdd/runtime_runs/latest.json`.
-4. Edite diretamente os arquivos permitidos.
-5. Os testes podem ser editados quando necessário para refletir a especificação, mas nunca devem ser enfraquecidos apenas para obter resultado verde.
-6. Execute a verificação específica e, depois, a regressão global.
-7. Execute `python tools/runtime_iteration.py --spec <especificação> --verify`.
-8. Se houver falha, use o diagnóstico para fazer nova edição e repita o ciclo.
-9. Pare somente nos estados `satisfied`, `blocked` ou `needs_human_decision`.
+1. Read `.sdd/runtime-loop.yaml`, the selected spec, and the highest-priority item with status `ready`.
+2. Run `python tools/runtime_iteration.py --spec <spec> --prepare`.
+3. Inspect the report at `.sdd/runtime_runs/latest.json`.
+4. Edit the allowed files directly.
+5. Tests may be edited when needed to reflect the specification, but must never be weakened just to get a green result.
+6. Run the specific verification and then the global regression.
+7. Run `python tools/runtime_iteration.py --spec <spec> --verify`.
+8. On failure, use the diagnostics to make another edit and repeat the cycle.
+9. Stop only in the `satisfied`, `blocked`, or `needs_human_decision` states.
 
-## Regras de integridade
+## Integrity rules
 
-- A especificação é a fonte de verdade funcional.
-- Não remova asserções, não transforme testes em verificações triviais e não use `skip` ou `xfail` para mascarar falhas.
-- Não altere `.sdd/runtime-loop.yaml`, `tools/sdd_config.yaml` nem os oráculos durante uma iteração.
-- Não declare sucesso sem comandos executados e evidências registradas.
-- Não inclua credenciais, endpoints nem dependência de Chat Completions.
+- The specification is the functional source of truth.
+- Do not remove assertions, do not turn tests into trivial checks, and do not use `skip` or `xfail` to mask failures.
+- Do not change `.sdd/runtime-loop.yaml`, `tools/sdd_config.yaml`, or the oracles during an iteration.
+- Do not declare success without executed commands and recorded evidence.
+- Do not include credentials, endpoints, or any Chat Completions dependency.
 
-## Sincronização obrigatória de `tasks.md`
+## Mandatory `tasks.md` synchronization
 
-Ao concluir e verificar uma tarefa, o agente DEVE atualizar também o arquivo `.sdd/specs/<especificação>/tasks.md` na mesma iteração:
+When a task is completed and verified, the agent MUST also update `.sdd/specs/<spec>/tasks.md` in the same iteration:
 
-- marque como `- [x]` somente a tarefa cujo status correspondente em `backlog.yaml` seja `verified`;
-- mantenha como `- [ ]` as tarefas abertas, bloqueadas, rejeitadas ou que aguardem decisão humana;
-- nunca marque `[x]` apenas porque o código foi editado: a verificação específica e a regressão global devem ter passado;
-- preserve o mesmo identificador da tarefa (`TSKxx`) para permitir auditoria e correlação;
-- antes de encerrar a iteração, confira se `tasks.md`, `backlog.yaml`, o ledger e as evidências apresentam o mesmo estado;
-- se houver divergência, trate `backlog.yaml` e as evidências executáveis como fontes operacionais, corrija `tasks.md` e registre a sincronização no relatório da iteração.
+- mark as `- [x]` only the task whose corresponding status in `backlog.yaml` is `verified`;
+- keep as `- [ ]` tasks that are open, blocked, rejected, or awaiting a human decision;
+- never mark `[x]` just because code was edited: the specific verification and the global regression must have passed;
+- keep the same task identifier (`TSKxx`) to allow auditing and correlation;
+- before ending the iteration, check that `tasks.md`, `backlog.yaml`, the ledger, and the evidence show the same state;
+- if they diverge, treat `backlog.yaml` and the executable evidence as the operational sources, fix `tasks.md`, and record the synchronization in the iteration report.
 
-Uma tarefa realizada somente é considerada documentalmente encerrada quando código, testes, `backlog.yaml`, ledger e checkbox de `tasks.md` estiverem coerentes.
+A completed task is only considered documentally closed when code, tests, `backlog.yaml`, the ledger, and the `tasks.md` checkbox are consistent.
 
-## Substituição do exemplo `hello-transform`
+## Replacing the `hello-transform` example
 
-Quando o usuário iniciar um programa próprio, leia `SUBSTITUIR_EXEMPLO.md` antes de editar o repositório. O agente deve:
+When the user starts their own program, read `REPLACE_EXAMPLE.md` before editing the repository. The agent must:
 
-1. identificar e remover apenas os arquivos exclusivos do exemplo;
-2. preservar o núcleo reutilizável do harness;
-3. criar a nova especificação, o código e os testes;
-4. atualizar todas as referências ao nome `hello-transform`;
-5. regenerar `SELF_CHECK.md` e regenerar `AGENT_LOOP_MANIFEST.json` ao final;
-6. executar a verificação de referências residuais descrita no guia de substituição.
+1. identify and remove only the files exclusive to the example;
+2. preserve the reusable core of the harness;
+3. create the new spec, code, and tests;
+4. update every reference to the name `hello-transform`;
+5. regenerate `SELF_CHECK.md` and regenerate `AGENT_LOOP_MANIFEST.json` at the end;
+6. run the residual-reference check described in the replacement guide.
 
-Não exclua arquivos do núcleo apenas porque fazem referência ao exemplo: alguns devem ser adaptados, e não removidos.
+Do not delete core files just because they reference the example: some must be adapted, not removed.

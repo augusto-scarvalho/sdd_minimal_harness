@@ -1,13 +1,13 @@
-# Qualidade da especificação
+# Specification quality
 
-## Regra principal
+## Main rule
 
-> Se um artefato não identifica quem o consome, ele não deve existir.
+> If an artifact does not identify who consumes it, it should not exist.
 
-Toda tarefa deve declarar:
+Every task must declare:
 
-- o que muda;
-- onde muda;
-- qual requisito ou critério atende;
-- qual teste ou evidência comprova o resultado;
-- qual consumidor depende dela.
+- what changes;
+- where it changes;
+- which requirement or criterion it satisfies;
+- which test or evidence proves the result;
+- which consumer depends on it.

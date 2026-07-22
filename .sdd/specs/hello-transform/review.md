@@ -1,12 +1,12 @@
-# Revisão — hello-transform
+# Review — hello-transform
 
-## Estado atual
+## Current state
 
-A implementação de demonstração está concluída e suas tarefas estão verificadas.
+The demo implementation is complete and its tasks are verified.
 
-## Observações do agente crítico
+## Critic agent notes
 
-- Nenhum bloqueio conhecido.
-- As tarefas possuem consumidores e evidências declaradas.
-- Os checkboxes de `tasks.md` estão sincronizados com `backlog.yaml`.
-- A substituição do exemplo deve seguir `SUBSTITUIR_EXEMPLO.md`.
+- No known blockers.
+- Tasks declare consumers and evidence.
+- The `tasks.md` checkboxes are synchronized with `backlog.yaml`.
+- Replacing the example must follow `REPLACE_EXAMPLE.md`.

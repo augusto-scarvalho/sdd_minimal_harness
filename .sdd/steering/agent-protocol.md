@@ -1,14 +1,14 @@
-# Protocolo do agente
+# Agent protocol
 
-Você atua como agente construtor em um fluxo SDD.
+You act as the builder agent in an SDD flow.
 
-## Regras obrigatórias
+## Mandatory rules
 
-1. Execute somente o item de maior prioridade do backlog com status `ready`.
-2. Não crie artefato novo sem consumidor declarado.
-3. Não marque uma tarefa como concluída sem evidência.
-4. Não aprove o próprio trabalho; deixe o runner, o verificador e o agente crítico validarem.
-5. Se a tarefa não estiver pronta, mova-a para `refine_required`.
-6. Toda iteração deve produzir código, teste, especificação refinada, decisão ou descarte justificado.
-7. Se não houver delta real, pare e registre o bloqueio.
-8. Quando uma tarefa for verificada, sincronize seu checkbox em `tasks.md`.
+1. Work only on the highest-priority backlog item with status `ready`.
+2. Do not create a new artifact without a declared consumer.
+3. Do not mark a task as done without evidence.
+4. Do not approve your own work; let the runner, the verifier, and the critic agent validate it.
+5. If the task is not ready, move it to `refine_required`.
+6. Every iteration must produce code, a test, a refined spec, a decision, or a justified discard.
+7. If there is no real delta, stop and record the blocker.
+8. When a task is verified, synchronize its checkbox in `tasks.md`.

@@ -1,38 +1,38 @@
-# Harness SDD mínimo
+# Minimal SDD Harness
 
-Um harness leve para Desenvolvimento Orientado por Especificações (Spec-Driven Development — SDD), com agentes, backlog dinâmico, ledger somente para acréscimos e verificação por Python.
+A lightweight harness for Spec-Driven Development (SDD) with agents, a dynamic backlog, an append-only ledger, and Python-based verification.
 
-Ele foi projetado para executar:
+It is designed to run:
 
-- localmente;
-- dentro de contêiner ou pod;
-- em um ambiente de agente com ferramentas de leitura, edição e terminal (por exemplo, o runtime temporário de código do ChatGPT ou do Microsoft 365 Copilot em modo agente);
-- em CI/CD;
-- com qualquer linguagem de implementação, desde que os comandos de verificação sejam configurados em YAML.
+- locally;
+- inside a container or pod;
+- in an agent environment with read, edit, and terminal tools (for example, the temporary code runtime of ChatGPT or Microsoft 365 Copilot in agent mode);
+- in CI/CD;
+- with any implementation language, as long as the verification commands are configured in YAML.
 
-## Visão geral
+## Overview
 
 ```text
-Especificação + backlog + ledger
+Spec + backlog + ledger
                ↓
-Runner seleciona a tarefa `ready` de maior prioridade
+Runner selects the highest-priority `ready` task
                ↓
-Agente inspeciona, edita e executa verificações
+Agent inspects, edits, and runs verifications
                ↓
-Verificador executa testes específicos e regressão
+Verifier runs task-specific tests and the global regression
                ↓
-Tarefa passa para `verified` ou `blocked`
+Task moves to `verified` or `blocked`
                ↓
-Ledger e `tasks.md` são sincronizados
+Ledger and `tasks.md` are synchronized
                ↓
-Ciclo continua até zerar o backlog ou encontrar bloqueio
+Cycle continues until the backlog is empty or a blocker is found
 ```
 
-O runner não implementa código sozinho. O agente da sessão usa o runner e `tools/runtime_iteration.py` como trilhos auditáveis para trabalhar em uma tarefa por vez.
+The runner does not implement code by itself. The session agent uses the runner and `tools/runtime_iteration.py` as auditable rails to work on one task at a time.
 
-## Início rápido
+## Quick start
 
-Requisitos: Python 3.10+.
+Requirements: Python 3.10+.
 
 ```bash
 cd sdd_minimal_harness
@@ -42,14 +42,14 @@ python tools/sdd_runner.py --spec hello-transform --status
 python tools/runtime_iteration.py --spec hello-transform --prepare
 ```
 
-## Documentação principal
+## Core documentation
 
-- `AGENTS.md`: instruções obrigatórias para o agente.
-- `RUNTIME_LOOP.md`: execução do ciclo nativo de edição e verificação.
-- `SUBSTITUIR_EXEMPLO.md`: arquivos a excluir, adaptar, manter e criar ao trocar `hello-transform` por um programa próprio.
-- `SELF_CHECK.md`: critérios de autoverificação do pacote atual.
+- `AGENTS.md`: mandatory instructions for the agent.
+- `RUNTIME_LOOP.md`: running the native edit-and-verify cycle.
+- `REPLACE_EXAMPLE.md`: files to delete, adapt, keep, and create when replacing `hello-transform` with your own program.
+- `SELF_CHECK.md`: self-verification criteria for the current package.
 
-## Estrutura
+## Structure
 
 ```text
 .sdd/
@@ -86,48 +86,48 @@ LICENSE
 requirements.txt
 ```
 
-## Comandos principais
+## Main commands
 
-### Ver o status
+### Show status
 
 ```bash
 python tools/sdd_runner.py --spec hello-transform --status
 ```
 
-### Validar a especificação e o backlog
+### Validate the spec and backlog
 
 ```bash
 python tools/sdd_runner.py --spec hello-transform --check
 ```
 
-### Executar uma iteração do runner
+### Run one runner iteration
 
 ```bash
 python tools/sdd_runner.py --spec hello-transform --once
 ```
 
-### Executar o runner até zerar o backlog
+### Run the runner until the backlog is empty
 
 ```bash
 python tools/sdd_runner.py --spec hello-transform --loop
 ```
 
-### Preparar ou verificar uma iteração do agente
+### Prepare or verify an agent iteration
 
 ```bash
 python tools/runtime_iteration.py --spec hello-transform --prepare
-python tools/runtime_iteration.py --spec hello-transform --verify --reason "Descrição da alteração"
+python tools/runtime_iteration.py --spec hello-transform --verify --reason "Description of the change"
 ```
 
-### Gerar o contexto da próxima tarefa
+### Generate the next-task context
 
 ```bash
 python tools/sdd_runner.py --spec hello-transform --next-prompt
 ```
 
-## Adaptação para outra linguagem
+## Adapting to another language
 
-Edite `tools/sdd_config.yaml`:
+Edit `tools/sdd_config.yaml`:
 
 ```yaml
 commands:
@@ -140,9 +140,9 @@ commands:
     # - "make test"
 ```
 
-O runner é agnóstico em relação à linguagem e apenas executa os comandos declarados.
+The runner is language-agnostic and simply executes the declared commands.
 
-## Estados possíveis
+## Possible states
 
 ```text
 candidate
@@ -159,17 +159,17 @@ pruned
 needs_human_decision
 ```
 
-## Regras essenciais
+## Essential rules
 
-- uma tarefa `ready` precisa ter os campos mínimos;
-- toda tarefa precisa estar vinculada a critérios de aceite;
-- toda tarefa precisa declarar consumidores e evidências;
-- referências do tipo `arquivo.py::test_nome` precisam existir;
-- os comandos configurados precisam passar;
-- cada iteração registra eventos em `ledger.jsonl`;
-- uma tarefa `verified` deve estar marcada com `[x]` em `tasks.md`;
-- o ciclo para quando não há tarefas abertas ou quando existe bloqueio.
+- a `ready` task must have the minimum fields;
+- every task must be linked to acceptance criteria;
+- every task must declare consumers and evidence;
+- references like `file.py::test_name` must exist;
+- the configured commands must pass;
+- each iteration records events in `ledger.jsonl`;
+- a `verified` task must be checked `[x]` in `tasks.md`;
+- the cycle stops when there are no open tasks or a blocker exists.
 
-## Substituição da demonstração
+## Replacing the demo
 
-O repositório inclui `hello-transform` como exemplo concluído. Para criar um programa próprio, não remova o repositório inteiro. Siga `SUBSTITUIR_EXEMPLO.md`, que contém a árvore de arquivos, a lista de exclusões, os arquivos a adaptar e a estrutura mínima a criar.
+The repository ships `hello-transform` as a completed example. To build your own program, do not delete the whole repository. Follow `REPLACE_EXAMPLE.md`, which contains the file tree, the deletion list, the files to adapt, and the minimum structure to create.

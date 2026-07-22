@@ -24,7 +24,7 @@ READY_ALLOWED_TYPES = {"code", "test", "spec", "decision", "prune", "ops", "code
 
 def load_yaml(path: Path) -> dict[str, Any]:
     if yaml is None:
-        raise RuntimeError("PyYAML ausente. Instale com: pip install pyyaml")
+        raise RuntimeError("PyYAML missing. Install with: pip install pyyaml")
     if not path.exists():
         raise FileNotFoundError(path)
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -32,7 +32,7 @@ def load_yaml(path: Path) -> dict[str, Any]:
 
 def dump_yaml(path: Path, data: dict[str, Any]) -> None:
     if yaml is None:
-        raise RuntimeError("PyYAML ausente. Instale com: pip install pyyaml")
+        raise RuntimeError("PyYAML missing. Install with: pip install pyyaml")
     path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
 
 
@@ -74,19 +74,19 @@ def validate_ready_task(task: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     for field in REQUIRED_TASK_FIELDS:
         if field not in task or task[field] in (None, "", []):
-            errors.append(f"campo obrigatório ausente ou vazio: {field}")
+            errors.append(f"missing or empty required field: {field}")
     if task.get("status") != "ready":
-        errors.append("task não está em status ready")
+        errors.append("task is not in ready status")
     if task.get("type") not in READY_ALLOWED_TYPES:
-        errors.append(f"type inválido: {task.get('type')}")
+        errors.append(f"invalid type: {task.get('type')}")
     if not task.get("related_criteria"):
-        errors.append("task sem critério de aceite relacionado")
+        errors.append("task has no related acceptance criteria")
     if not task.get("evidence_expected"):
-        errors.append("task sem evidência esperada")
+        errors.append("task has no expected evidence")
     if not task.get("consumes"):
-        errors.append("task sem artefatos consumidos")
+        errors.append("task has no consumed artifacts")
     if not task.get("produces"):
-        errors.append("task sem evidências/artefatos produzidos")
+        errors.append("task has no produced evidence/artifacts")
     return errors
 
 
@@ -125,7 +125,7 @@ def run_commands(commands: list[str]) -> tuple[int, list[dict[str, Any]]]:
     final = 0
     for cmd in commands:
         if cmd == "python" or cmd.startswith("python "):
-            # ponytail: 'python' pode não existir no PATH (Windows/py launcher)
+            # ponytail: 'python' may not exist on PATH (Windows/py launcher)
             cmd = f'"{sys.executable}"' + cmd[len("python"):]
         print(f"[sdd-runner] $ {cmd}")
         proc = subprocess.run(cmd, shell=True, cwd=ROOT, text=True, capture_output=True)
@@ -175,17 +175,17 @@ def check_all(spec_dir: Path, backlog_data: dict[str, Any]) -> int:
     errors: list[str] = []
     for name in ["requirements.md", "design.md", "tasks.md", "backlog.yaml", "ledger.jsonl"]:
         if not (spec_dir / name).exists():
-            errors.append(f"arquivo ausente: {name}")
+            errors.append(f"missing file: {name}")
     for task in backlog_data.get("backlog", []):
         if task.get("status") == "ready":
             errors.extend([f"{task.get('id')}: {e}" for e in validate_ready_task(task)])
-            errors.extend([f"{task.get('id')}: evidência ausente: {e}" for e in validate_evidence(task)])
+            errors.extend([f"{task.get('id')}: missing evidence: {e}" for e in validate_evidence(task)])
     if errors:
         for error in errors:
             print(f"[CHECK-FAIL] {error}")
         append_ledger(spec_dir, {"event": "check_failed", "errors": errors})
         return 1
-    print("[CHECK-PASS] spec/backlog/evidências mínimas OK")
+    print("[CHECK-PASS] spec/backlog/minimum evidence OK")
     append_ledger(spec_dir, {"event": "check_passed"})
     return 0
 
@@ -194,12 +194,12 @@ def run_once(spec_dir: Path, backlog_data: dict[str, Any]) -> int:
     backlog = backlog_data.get("backlog", [])
     task = select_top_ready(backlog)
     if not task:
-        print("[sdd-runner] nenhuma task ready.")
+        print("[sdd-runner] no ready task.")
         append_ledger(spec_dir, {"event": "no_ready_task"})
         return 0
 
     task_id = task.get("id")
-    print(f"[sdd-runner] task selecionada: {task_id} - {task.get('title')}")
+    print(f"[sdd-runner] selected task: {task_id} - {task.get('title')}")
     ready_errors = validate_ready_task(task)
     evidence_errors = validate_evidence(task)
     if ready_errors or evidence_errors:
@@ -234,12 +234,12 @@ def run_loop(spec_dir: Path) -> int:
         backlog_data = load_backlog(spec_dir)
         summary = status_summary(backlog_data.get("backlog", []))
         if summary["open"] == 0:
-            print("[sdd-runner] backlog zerado.")
+            print("[sdd-runner] backlog cleared.")
             append_ledger(spec_dir, {"event": "backlog_zero", "iterations": iterations})
             return 0
         ready = select_top_ready(backlog_data.get("backlog", []))
         if not ready:
-            print("[sdd-runner] há itens abertos, mas nenhum ready. Encerrando para intervenção/refinamento.")
+            print("[sdd-runner] open items remain, but none ready. Stopping for intervention/refinement.")
             append_ledger(spec_dir, {"event": "loop_stopped_no_ready", "summary": summary})
             return 1
         rc = run_once(spec_dir, backlog_data)
@@ -254,7 +254,7 @@ def run_loop(spec_dir: Path) -> int:
 def next_prompt(spec_dir: Path, backlog_data: dict[str, Any]) -> int:
     task = select_top_ready(backlog_data.get("backlog", []))
     if not task:
-        print("Nenhuma task ready.")
+        print("No ready task.")
         return 1
     req = (spec_dir / "requirements.md").read_text(encoding="utf-8")
     design = (spec_dir / "design.md").read_text(encoding="utf-8")
@@ -266,7 +266,7 @@ def next_prompt(spec_dir: Path, backlog_data: dict[str, Any]) -> int:
     print("\n## Design\n")
     print(design[:3000])
     print("\n## Mandatory instruction\n")
-    print("Execute somente esta task. Não crie artefato novo sem consumidor. Produza evidência e rode o verifier.")
+    print("Work only on this task. Do not create a new artifact without a consumer. Produce evidence and run the verifier.")
     append_ledger(spec_dir, {"event": "next_prompt_generated", "task_id": task.get("id")})
     return 0
 
@@ -283,7 +283,7 @@ def main() -> int:
 
     spec_dir = spec_dir_for(args.spec)
     if not spec_dir.exists():
-        print(f"Spec não encontrada: {spec_dir}", file=sys.stderr)
+        print(f"Spec not found: {spec_dir}", file=sys.stderr)
         return 2
     backlog_data = load_backlog(spec_dir)
 

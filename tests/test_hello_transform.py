@@ -3,19 +3,19 @@ import pytest
 from src.hello_transform import normalize_text
 
 
-def test_normaliza_texto_valido():
+def test_normalizes_valid_text():
     assert normalize_text("abc") == "abc"
 
 
-def test_remove_espacos_extras():
+def test_strips_surrounding_spaces():
     assert normalize_text("  abc  ") == "abc"
 
 
-def test_rejeita_nulo():
+def test_rejects_none():
     with pytest.raises(ValueError):
         normalize_text(None)
 
 
-def test_rejeita_vazio():
+def test_rejects_empty():
     with pytest.raises(ValueError):
         normalize_text("   ")

@@ -1,8 +1,8 @@
-# Resultado da autoverificação
+# Self-check result
 
-Este arquivo registra a condição do pacote de demonstração. Ele deve ser regenerado quando `hello-transform` for substituído.
+This file records the condition of the demo package. It must be regenerated when `hello-transform` is replaced.
 
-## Comandos executados
+## Commands executed
 
 ```bash
 python -m pytest -q
@@ -11,11 +11,11 @@ python tools/sdd_runner.py --spec hello-transform --status
 python tools/runtime_iteration.py --spec hello-transform --prepare
 ```
 
-## Critérios esperados
+## Expected criteria
 
-- todos os testes passam;
-- a validação da especificação e do backlog passa;
-- as duas tarefas estão em `verified`;
-- não há tarefas abertas ou bloqueadas;
-- `tasks.md` está sincronizado com `backlog.yaml`;
-- o relatório do ciclo nativo apresenta `satisfied`.
+- all tests pass;
+- the spec and backlog validation passes;
+- both tasks are `verified`;
+- there are no open or blocked tasks;
+- `tasks.md` is synchronized with `backlog.yaml`;
+- the native loop report shows `satisfied`.

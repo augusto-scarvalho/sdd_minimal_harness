@@ -24,7 +24,7 @@ def snapshot(cfg:dict[str,Any])->dict[str,str]:
     return out
 
 def run(argv:list[str],timeout:int)->dict[str,Any]:
-    if argv and argv[0]=='python': argv=[sys.executable]+argv[1:]  # ponytail: 'python' pode não existir no PATH (Windows/py launcher)
+    if argv and argv[0]=='python': argv=[sys.executable]+argv[1:]  # ponytail: 'python' may not exist on PATH (Windows/py launcher)
     started=time.time()
     try:
         p=subprocess.run(argv,cwd=ROOT,text=True,capture_output=True,timeout=timeout)

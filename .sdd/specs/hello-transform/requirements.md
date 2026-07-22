@@ -1,37 +1,37 @@
 # Requirements — hello-transform
 
-## Objetivo
+## Goal
 
-Normalizar texto de entrada de forma determinística.
+Normalize input text deterministically.
 
-## Escopo
+## Scope
 
-- Receber uma string.
-- Remover espaços no início e no fim.
-- Rejeitar valores nulos, não texto ou vazios.
+- Receive a string.
+- Strip leading and trailing spaces.
+- Reject null, non-text, or empty values.
 
-## Fora de escopo
+## Out of scope
 
-- Persistência.
-- Interface gráfica.
-- Integrações externas.
+- Persistence.
+- Graphical interface.
+- External integrations.
 
-## Histórias de usuário
+## User stories
 
-### US01 — Normalizar entrada textual
+### US01 — Normalize text input
 
-Como consumidor da função, quero normalizar texto para obter um valor limpo.
+As a consumer of the function, I want to normalize text to get a clean value.
 
-#### Critérios de aceite
+#### Acceptance criteria
 
-- CA01: QUANDO a entrada for texto válido, O SISTEMA DEVE retornar o texto normalizado.
-- CA02: QUANDO a entrada tiver espaços no início ou no fim, O SISTEMA DEVE remover esses espaços.
+- CA01: WHEN the input is valid text, THE SYSTEM SHALL return the normalized text.
+- CA02: WHEN the input has leading or trailing spaces, THE SYSTEM SHALL remove those spaces.
 
-### US02 — Rejeitar entrada inválida
+### US02 — Reject invalid input
 
-Como consumidor da função, quero receber erro quando a entrada for inválida.
+As a consumer of the function, I want to receive an error when the input is invalid.
 
-#### Critérios de aceite
+#### Acceptance criteria
 
-- CA03: QUANDO a entrada for nula, O SISTEMA DEVE retornar erro de validação.
-- CA04: QUANDO a entrada estiver vazia após normalização, O SISTEMA DEVE retornar erro de validação.
+- CA03: WHEN the input is null, THE SYSTEM SHALL return a validation error.
+- CA04: WHEN the input is empty after normalization, THE SYSTEM SHALL return a validation error.
