@@ -1,0 +1,9 @@
+commands:
+  verify:
+    - "python -m pytest -q"
+
+policy:
+  max_reopen_per_task: 5
+  max_new_artifacts_per_iteration: 1
+  require_meaningful_delta: true
+  prune_every_n_iterations: 3

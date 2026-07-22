@@ -1,0 +1,53 @@
+backlog:
+- id: TSK01
+  title: Implementar normalização de texto válido
+  status: verified
+  type: code_and_test
+  related_requirements:
+  - US01
+  related_criteria:
+  - CA01
+  - CA02
+  consumes:
+  - requirements.md
+  - design.md
+  produces: &id001
+  - src/hello_transform.py
+  - tests/test_hello_transform.py::test_normaliza_texto_valido
+  - tests/test_hello_transform.py::test_remove_espacos_extras
+  evidence_expected:
+  - pytest passa
+  - test_normaliza_texto_valido existe
+  - test_remove_espacos_extras existe
+  priority:
+    score: 20
+    reasons:
+    - Critérios CA01/CA02 precisam de prova executável
+  verified_at: 1783707507
+  evidence_produced: *id001
+- id: TSK02
+  title: Implementar rejeição de entrada inválida
+  status: verified
+  type: code_and_test
+  related_requirements:
+  - US02
+  related_criteria:
+  - CA03
+  - CA04
+  consumes:
+  - requirements.md
+  - design.md
+  produces: &id002
+  - src/hello_transform.py
+  - tests/test_hello_transform.py::test_rejeita_nulo
+  - tests/test_hello_transform.py::test_rejeita_vazio
+  evidence_expected:
+  - pytest passa
+  - test_rejeita_nulo existe
+  - test_rejeita_vazio existe
+  priority:
+    score: 19
+    reasons:
+    - Critérios CA03/CA04 precisam de prova executável
+  verified_at: 1783707515
+  evidence_produced: *id002

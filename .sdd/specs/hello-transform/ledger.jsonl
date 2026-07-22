@@ -1,0 +1,7 @@
+{"event": "check_passed", "id": "LEDGER-1783707497295", "ts": 1783707497}
+{"event": "task_started", "task_id": "TSK01", "criteria": ["CA01", "CA02"], "id": "LEDGER-1783707498284", "ts": 1783707498}
+{"event": "task_verified", "task_id": "TSK01", "evidence": ["src/hello_transform.py", "tests/test_hello_transform.py::test_normaliza_texto_valido", "tests/test_hello_transform.py::test_remove_espacos_extras"], "command_results": [{"cmd": "python -m pytest -q", "returncode": 0, "stdout_tail": "......                                                                   [100%]\n6 passed in 5.04s\n", "stderr_tail": ""}], "id": "LEDGER-1783707507245", "ts": 1783707507}
+{"event": "task_started", "task_id": "TSK02", "criteria": ["CA03", "CA04"], "id": "LEDGER-1783707507254", "ts": 1783707507}
+{"event": "task_verified", "task_id": "TSK02", "evidence": ["src/hello_transform.py", "tests/test_hello_transform.py::test_rejeita_nulo", "tests/test_hello_transform.py::test_rejeita_vazio"], "command_results": [{"cmd": "python -m pytest -q", "returncode": 0, "stdout_tail": "......                                                                   [100%]\n6 passed in 4.60s\n", "stderr_tail": ""}], "id": "LEDGER-1783707515940", "ts": 1783707515}
+{"event": "backlog_zero", "iterations": 2, "id": "LEDGER-1783707515945", "ts": 1783707515}
+{"event": "check_passed", "id": "LEDGER-1784717928058", "ts": 1784717928}

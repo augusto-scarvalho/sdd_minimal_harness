@@ -1,0 +1,56 @@
+version: 1
+mode: agent_native
+spec: hello-transform
+
+loop:
+  max_iterations: 12
+  stop_states:
+    - satisfied
+    - blocked
+    - needs_human_decision
+  require_meaningful_delta: true
+  require_specific_verification: true
+  require_global_regression: true
+
+workspace:
+  editable_roots:
+    - src
+    - tests
+    - .sdd/specs
+  protected_paths:
+    - .sdd/runtime-loop.yaml
+    - tools/sdd_config.yaml
+    - tools/runtime_iteration.py
+    - AGENTS.md
+  ignored_patterns:
+    - __pycache__
+    - .pytest_cache
+    - '*.pyc'
+    - .sdd/runtime_runs
+
+verification:
+  specific_from_task_produces: true
+  global_commands:
+    - [python, -m, pytest, -q]
+  timeout_seconds: 120
+
+test_integrity:
+  allow_test_edits: true
+  forbid_skip_or_xfail_additions: true
+  forbid_assertion_removal_without_spec_change: true
+  require_reason_for_test_change: true
+
+evidence:
+  reports_dir: .sdd/runtime_runs
+  capture_command_output_chars: 12000
+  hash_changed_files: true
+
+task_documentation:
+  file: .sdd/specs/<spec>/tasks.md
+  synchronize_on_verified: true
+  checked_marker: "- [x]"
+  unchecked_marker: "- [ ]"
+  source_of_truth: backlog.yaml
+  require_id_correlation: true
+  require_consistency_before_stop: true
+
