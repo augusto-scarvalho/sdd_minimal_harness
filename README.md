@@ -1,34 +1,29 @@
 # Minimal SDD Harness
 
+> Turn ChatGPT's ephemeral code runtime into a disciplined coding agent — an alternative to Claude Code, Codex, and other agentic CLIs, for the price of a chat subscription.
+
 A lightweight harness for Spec-Driven Development (SDD) with agents, a dynamic backlog, an append-only ledger, and Python-based verification.
 
 It is designed to run:
 
 - locally;
 - inside a container or pod;
-- in an agent environment with read, edit, and terminal tools (for example, the temporary code runtime of ChatGPT or Microsoft 365 Copilot in agent mode);
+- in an agent environment with read, edit, and terminal tools (for example, the temporary code runtime of ChatGPT or Microsoft 365 Copilot in agent/Think mode);
 - in CI/CD;
 - with any implementation language, as long as the verification commands are configured in YAML.
 
-## Overview
+## An alternative to agentic CLIs
 
-```text
-Spec + backlog + ledger
-               ↓
-Runner selects the highest-priority `ready` task
-               ↓
-Agent inspects, edits, and runs verifications
-               ↓
-Verifier runs task-specific tests and the global regression
-               ↓
-Task moves to `verified` or `blocked`
-               ↓
-Ledger and `tasks.md` are synchronized
-               ↓
-Cycle continues until the backlog is empty or a blocker is found
-```
+Agentic tools such as Claude Code and Codex give a model a persistent terminal on your machine. This harness offers a different trade: upload the harness as a zip to ChatGPT (or Microsoft 365 Copilot in agent/Think mode) and let the model operate it inside its own temporary code runtime. The harness supplies the rails — executable specs, a prioritized backlog, an append-only ledger, and test-gated task closure — so the chat session behaves like a disciplined coding agent instead of a one-shot code generator.
 
-The runner does not implement code by itself. The session agent uses the runner and `tools/runtime_iteration.py` as auditable rails to work on one task at a time.
+The whole loop happens inside a chat:
+
+1. Upload the harness zip and state your specification in the conversation.
+2. The model replaces the demo spec, derives backlog tasks, and iterates `prepare → edit → verify` until every task is `verified` by tests.
+3. It returns a complete updated zip; you extract and run the program on your machine.
+4. Paste real-world failures or new requests back into the chat — they become new verified backlog tasks in the next zip.
+
+The trade-off is explicit: the runtime is remote, ephemeral, and 100% controlled by the provider. State persists only in the zips you exchange, sessions have time and network limits, and platform-specific behavior (for example, Windows batch files) cannot be executed there — only covered by contract tests, as the session below demonstrates. In exchange you get an auditable agentic loop with no API keys, no local installation, and no per-token billing.
 
 ## Real-world example: GPT 5.5 operating the harness
 
@@ -59,6 +54,26 @@ First run on the user's machine: the launcher downloads the pinned CPython embed
 A completed search: 40 products exported to a price-sorted CSV in `./output`, with lowest, highest, and average prices printed on screen:
 
 <img src="docs/screenshots/results.png" width="720" alt="Completed search showing price statistics and the generated CSV open in VS Code">
+
+## Overview
+
+```text
+Spec + backlog + ledger
+               ↓
+Runner selects the highest-priority `ready` task
+               ↓
+Agent inspects, edits, and runs verifications
+               ↓
+Verifier runs task-specific tests and the global regression
+               ↓
+Task moves to `verified` or `blocked`
+               ↓
+Ledger and `tasks.md` are synchronized
+               ↓
+Cycle continues until the backlog is empty or a blocker is found
+```
+
+The runner does not implement code by itself. The session agent uses the runner and `tools/runtime_iteration.py` as auditable rails to work on one task at a time.
 
 ## Quick start
 
