@@ -1,5 +1,9 @@
 # Minimal SDD Harness
 
+[![CI](https://github.com/augusto-scarvalho/sdd_minimal_harness/actions/workflows/ci.yml/badge.svg)](https://github.com/augusto-scarvalho/sdd_minimal_harness/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/github/license/augusto-scarvalho/sdd_minimal_harness)](LICENSE)
+
 > Turn ChatGPT's ephemeral code runtime into a disciplined coding agent — an alternative to Claude Code, Codex, and other agentic CLIs, for the price of a chat subscription.
 
 A lightweight harness for Spec-Driven Development (SDD) with agents, a dynamic backlog, an append-only ledger, and Python-based verification.
