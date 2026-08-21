@@ -20,6 +20,41 @@ It is designed to run:
 
 Agentic tools such as Claude Code and Codex give a model a persistent terminal on your machine. This harness offers a different trade: upload the harness as a zip to ChatGPT (or Microsoft 365 Copilot in agent/Think mode) and let the model operate it inside its own temporary code runtime. The harness supplies the rails — executable specs, a prioritized backlog, an append-only ledger, and test-gated task closure — so the chat session behaves like a disciplined coding agent instead of a one-shot code generator.
 
+```mermaid
+flowchart TD
+    subgraph Spec ["📋 1. Specification & Backlog (.sdd/specs/)"]
+        Req["requirements.md<br/>• Acceptance criteria (AC)"]
+        Design["design.md<br/>• Technical architecture"]
+        Tasks["tasks.md & backlog.yaml<br/>• Ready candidate queue"]
+    end
+
+    subgraph Runtime ["⚡ 2. Ephemeral Code Runtime (ChatGPT / Copilot / CI)"]
+        Iter["runtime_iteration.py<br/>• Picks next ready task"]
+        Code["Source Implementation<br/>• Edits src/hello_transform.py"]
+    end
+
+    subgraph Verification ["🧪 3. Test-Gated Verification"]
+        Runner["sdd_runner.py<br/>• Executes test suite"]
+        Ledger["ledger.jsonl<br/>• Append-only cryptographic audit"]
+    end
+
+    Req --> Tasks
+    Design --> Tasks
+    Tasks --> Iter
+    Iter --> Code
+    Code --> Runner
+    Runner -->|PASS| Ledger
+    Ledger -->|Verified| Tasks
+
+    classDef sStyle fill:#1e1e2e,stroke:#89b4fa,stroke-width:2px,color:#cdd6f4;
+    classDef rStyle fill:#2d1b4e,stroke:#cba6f7,stroke-width:2px,color:#cdd6f4;
+    classDef vStyle fill:#182820,stroke:#a6e3a1,stroke-width:2px,color:#a6e3a1;
+
+    class Req,Design,Tasks sStyle;
+    class Iter,Code rStyle;
+    class Runner,Ledger vStyle;
+```
+
 The whole loop happens inside a chat:
 
 1. Upload the harness zip and state your specification in the conversation.
